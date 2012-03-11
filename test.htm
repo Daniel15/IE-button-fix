@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Buttons in Old IE</title>
+</head>
+<body>
+	<form action="http://stuff.dan.cx/post.php" method="post">
+		<button type="submit" id="button1_id" name="button1" value="123">Button one</button>
+		<button type="submit" name="button2" value="456">Button two</button>
+		
+		<p>
+			Expected results: <br />
+			Button one: button1=123<br />
+			Button two: button2=456
+		</p>
+	</form>
+	<!--[if lt IE 8]><script src="buttonfix.js"></script><![endif]-->
+</body>
+</html>
