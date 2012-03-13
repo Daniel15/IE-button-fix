@@ -1,6 +1,6 @@
 /**!
- * <button> fix for IE 6 and 7
- * By Daniel Lo Nigro (Daniel15) - http://dan.cx/
+ * <button> fix for IE 6 and 7 - http://dl.vc/buttonfix
+ * By Daniel Lo Nigro (Daniel15)
  * Licensed under the MIT license
  *
  * Uses a simple DOMReady implementation for old IE, based off http://javascript.nwbox.com/IEContentLoaded/
