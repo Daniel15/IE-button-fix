@@ -59,8 +59,19 @@
 			if (button.type != 'submit')
 				continue;
 			
-			//button.addEventListener('click', handleClick, false);
 			button.attachEvent('onclick', handleClick);
+		}
+
+		// Also loop through regular submit buttons
+		// <button>s should be disabled when submitted via <input>s
+		var inputs = document.getElementsByTagName('input');
+		for (var i = 0, count = inputs.length; i < count; i++)
+		{
+			var input = inputs[i];
+			if (input.type != 'submit')
+				continue;
+				
+			input.attachEvent('onclick', handleClick);
 		}
 	}
 	
