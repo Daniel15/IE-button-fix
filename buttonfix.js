@@ -11,6 +11,9 @@
 	    valueEl = document.createElement('input'),
 	    initTimer;
 	
+	// Called when a button is clicked
+	// Handles disabling all the buttons so they're not posted to the server, and creates a hidden
+	// field containing the value of the clicked button.
 	function handleClick()
 	{
 		var count = buttons.length,
@@ -37,8 +40,34 @@
 				buttons[i].disabled = false;
 		}, 50);
 	}
-
-	function init()
+	
+	// Attach all the required event listeners
+	function attachEvents()
+	{
+		for (var i = 0, count = buttons.length; i < count; i++)
+		{
+			var button = buttons[i];
+			// We only want submit buttons
+			if (button.type != 'submit')
+				continue;
+			
+			button.attachEvent('onclick', handleClick);
+		}
+		
+		// Also loop through regular submit buttons
+		var inputs = document.getElementsByTagName('input');
+		for (var i = 0, count = inputs.length; i < count; i++)
+		{
+			var input = inputs[i];
+			if (input.type != 'submit')
+				continue;
+				
+			input.attachEvent('onclick', handleClick);
+		}
+	}
+	
+	// Keeps polling to check whether the page has fully loaded yet
+	function checkIfLoaded()
 	{
 		// Check if the DOM is ready (credits to Diego Perini - http://javascript.nwbox.com/IEContentLoaded/)
 		try
@@ -51,29 +80,26 @@
 		{
 			return;
 		}
-			
-		for (var i = 0, count = buttons.length; i < count; i++)
-		{
-			var button = buttons[i];
-			// We only want submit buttons
-			if (button.type != 'submit')
-				continue;
-			
-			button.attachEvent('onclick', handleClick);
-		}
+		
+		// If we reach here, the page has finished loading
+		attachEvents();
+	}
 
-		// Also loop through regular submit buttons
-		// <button>s should be disabled when submitted via <input>s
-		var inputs = document.getElementsByTagName('input');
-		for (var i = 0, count = inputs.length; i < count; i++)
+	function init()
+	{
+		// The doScroll hack doesn't work inside frames and iframes (see http://javascript.info/tutorial/onload-ondomcontentloaded)
+		// Check if we're inside a frame
+		if (window.top === window.self)
 		{
-			var input = inputs[i];
-			if (input.type != 'submit')
-				continue;
-				
-			input.attachEvent('onclick', handleClick);
+			// Not inside a frame, so it's safe to use the doScroll technique
+			initTimer = window.setInterval(checkIfLoaded, 10);
+		}
+		else
+		{
+			// Inside a frame, so just attach to onload
+			window.attachEvent('onload', attachEvents);
 		}
 	}
 	
-	initTimer = window.setInterval(init, 10);	
+	init();
 })(window.document.documentElement);
